@@ -94,6 +94,7 @@
     const { PDFDocument } = PDFLib
 
     async function generateDaact() {
+      console.log('just entenred in function')
     	// Fetch the PDF with form fields
       const formUrl = 'template-daact.pdf'
       const formPdfBytes = await fetch(formUrl).then(res => res.arrayBuffer())
@@ -109,6 +110,8 @@
       const dateField = form.getTextField('date')
 
       // Fill in the basic info fields
+      console.log(document.getElementById('buildingPermitReference').value)
+      console.log(document.getElementById('commissionningDate').value)
       dpField.setText(document.getElementById('buildingPermitReference').value)
       dateField.setText(document.getElementById('commissionningDate').value)
 
