@@ -87,37 +87,39 @@
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous">
-      const { PDFDocument } = PDFLib
-
-      async function generateDaact() {
-        console.log('just entered in function')
-        // Fetch the PDF with form fields
-        const formUrl = 'template-daact.pdf'
-        const formPdfBytes = await fetch(formUrl).then(res => res.arrayBuffer())
-
-        // Load a PDF with form fields
-        const pdfDoc = await PDFDocument.load(formPdfBytes)
-
-        // Get the form containing all the fields
-        const form = pdfDoc.getForm()
-
-        // Get all fields in the PDF by their names
-        const dpField = form.getTextField('dp')
-        const dateField = form.getTextField('date')
-
-        // Fill in the basic info fields
-        console.log(document.getElementById('buildingPermitReference').value)
-        console.log(document.getElementById('commissionningDate').value)
-        dpField.setText('coucou')
-        dateField.setText('coucou2')
-
-        // Serialize the PDFDocument to bytes (a Uint8Array)
-        const pdfBytes = await pdfDoc.save()
-
-        // Trigger the browser to download the PDF document
-        download(pdfBytes, "generated-daact.pdf", "application/pdf");
-      }
-    </script>
+   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script> -->
   </body>
+
+  <script>
+    const { PDFDocument } = PDFLib
+
+    async function generateDaact() {
+      console.log('just entered in function')
+    	// Fetch the PDF with form fields
+      const formUrl = 'template-daact.pdf'
+      const formPdfBytes = await fetch(formUrl).then(res => res.arrayBuffer())
+
+      // Load a PDF with form fields
+      const pdfDoc = await PDFDocument.load(formPdfBytes)
+
+      // Get the form containing all the fields
+      const form = pdfDoc.getForm()
+
+      // Get all fields in the PDF by their names
+      const dpField = form.getTextField('dp')
+      const dateField = form.getTextField('date')
+
+      // Fill in the basic info fields
+      console.log(document.getElementById('buildingPermitReference').value)
+      console.log(document.getElementById('commissionningDate').value)
+      dpField.setText('coucou')
+      dateField.setText('coucou2')
+
+      // Serialize the PDFDocument to bytes (a Uint8Array)
+      const pdfBytes = await pdfDoc.save()
+
+			// Trigger the browser to download the PDF document
+      download(pdfBytes, "generated-daact.pdf", "application/pdf");
+    }
+  </script>
 </html>
