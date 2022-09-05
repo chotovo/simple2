@@ -1,20 +1,99 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://unpkg.com/pdf-lib@1.11.0"></script>
     <script src="https://unpkg.com/downloadjs@1.4.7"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
   </head>
 
   <body>
-    <p>Click the button to fill form fields in an existing PDF document with <code>pdf-lib</code></p>
-    <button onclick="fillForm()">Fill PDF</button>
-    <p class="small">(Your browser will download the resulting file)</p>
+    <!-- DAACT FORM -->
+    <div class="container px-2 text-center">
+      <div class="row gx-8">
+        <div class="col">
+         <div class="p-3 border bg-light">
+            <form>
+            <div class="mb-3">
+              <label for="buildingPermitReference" class="form-label">Building Permit Reference</label>
+              <input type="text" class="form-control" id="buildingPermitReference" aria-describedby="buildingPermitReferenceHelp">
+              <div id="emailHelp" class="form-text">Should be something like "DP 000 000 22 P0000".</div>
+            </div>
+            <div class="mb-3">
+              <label for="commissionningDate" class="form-label">End of work date</label>
+              <input type="date" class="form-control" id="commissionningDate" aria-describedby="commissionningDateHelp">
+              <div id="emailHelp" class="form-text">The commissioning date can be entered here.</div>
+            </div>
+            <button type="submit" class="btn btn-primary" onclick="generateDaact()">Generate DAACT</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- MANDATE FORM -->
+        <div class="col">
+          <div class="p-3 border bg-light">
+             <form>
+             <div class="mb-3">
+               <label for="clientName" class="form-label">Client Name</label>
+               <input type="text" class="form-control" id="clientName">
+             </div>
+             <div class="mb-3">
+               <label for="projectAddress" class="form-label">Project Address</label>
+               <input type="text" class="form-control" id="projectAddress" aria-describedby="projectAddressHelp">
+               <div id="projectAddress" class="form-text">Can be different from the client's address.</div>
+             </div>
+             <button type="submit" class="btn btn-primary" onclick="generateMandate()">Generate Mandate</button>
+             </form>
+          </div>
+        </div>
+
+        <!-- BUILDING PERMIT FORM -->
+        <div class="col">
+          <div class="p-3 border bg-light">
+             <form>
+             <div class="mb-3">
+               <label for="projectManager" class="form-label">Project Manager</label>
+               <select class="form-select form-select-sm" id="projectManager">
+                <option selected>Select a Project Manager</option>
+                <option value="1">John Doe - johndo@otovo.com</option>
+                <option value="2">François Dupont - francoisdu@otovo.com</option>
+                <option value="3">Juliette Marti - juliettema@otovo.com</option>
+              </select>
+             </div>
+             <div class="mb-3">
+               <label for="installationSurface" class="form-label">Installation Surface</label>
+               <input type="text" class="form-control" id="installationSurface" aria-describedby="installationSurfaceHelp">
+               <div id="projectAddress" class="form-text">In squared meters (m²).</div>
+             </div>
+             <div class="mb-3">
+              <label for="projectAddress" class="form-label">Project Address</label>
+              <input type="text" class="form-control" id="projectAddress" aria-describedby="projectAddressHelp">
+              <div id="projectAddress" class="form-text">Can be different from the client's address.</div>
+            </div>
+            <div class="mb-3">
+              <label for="cadastralReference" class="form-label">Cadastral Reference</label>
+              <input type="text" class="form-control" id="cadastralReference" aria-describedby="cadastralReferenceHelp">
+              <div id="cadastralReference" class="form-text">Sould be something like "000 AA 123".</div>
+            </div>
+            <div class="mb-3">
+              <label for="cadastralSurface" class="form-label">Cadastral Surface</label>
+              <input type="text" class="form-control" id="cadastralSurface" aria-describedby="cadastralSurfaceHelp">
+              <div id="cadastralSurface" class="form-text">In squared meters (m²).</div>
+            </div>
+             <button type="submit" class="btn btn-primary" onclick="generateBuildingPermit()">Generate Building Permit</button>
+             </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
   </body>
 
   <script>
     const { PDFDocument } = PDFLib
 
-    async function fillForm() {
+    async function generateDaact() {
     	// Fetch the PDF with form fields
       const formUrl = 'template-daact.pdf'
       const formPdfBytes = await fetch(formUrl).then(res => res.arrayBuffer())
@@ -30,8 +109,8 @@
       const dateField = form.getTextField('date')
 
       // Fill in the basic info fields
-      dpField.setText('DP 029 333 22 P0010')
-      dateField.setText('10/08/2022')
+      dpField.setText(document.getElementById('buildingPermitReference').value)
+      dateField.setText(document.getElementById('commissionningDate').value)
 
       // Serialize the PDFDocument to bytes (a Uint8Array)
       const pdfBytes = await pdfDoc.save()
