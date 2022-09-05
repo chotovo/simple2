@@ -112,8 +112,8 @@
       // Fill in the basic info fields
       console.log(document.getElementById('buildingPermitReference').value)
       console.log(document.getElementById('commissionningDate').value)
-      dpField.setText(document.getElementById('buildingPermitReference').value)
-      dateField.setText(document.getElementById('commissionningDate').value)
+      dpField.setText('coucou')
+      dateField.setText('coucou2')
 
       // Serialize the PDFDocument to bytes (a Uint8Array)
       const pdfBytes = await pdfDoc.save()
